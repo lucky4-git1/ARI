@@ -1,0 +1,6 @@
+temperature: 0.7
+top_k: 40
+top_p: 0.9
+max_new_tokens: 100
+num_threads: 4
+use_cache: true
