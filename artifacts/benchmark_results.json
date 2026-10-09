@@ -1,0 +1,7 @@
+{
+  "num_threads": 4,
+  "prompt_length": 5,
+  "tokens_generated": 40,
+  "ttft_ms": 6.176433293148875,
+  "tokens_per_second": 140.9247501025874
+}
