@@ -18,12 +18,13 @@ def main():
     parser.add_argument("--max_steps", type=int, default=60)
     parser.add_argument("--batch_size", type=int, default=4)
     parser.add_argument("--lr", type=float, default=2e-4)
+    parser.add_argument("--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu")
     parser.add_argument("--output_checkpoint", type=str, default="artifacts/checkpoints/exp_sft_v1.pt")
     args = parser.parse_args()
 
     tokenizer = LayaTokenizer.load(args.tokenizer)
-    loaded = load_checkpoint(args.base_checkpoint, device="cpu")
-    model = loaded["model"]
+    loaded = load_checkpoint(args.base_checkpoint, device=args.device)
+    model = loaded["model"].to(args.device)
     print(f"Loaded base pretrained model from {args.base_checkpoint}")
 
     # Build dataset
@@ -44,6 +45,9 @@ def main():
         except StopIteration:
             data_iter = iter(loader)
             x, y = next(data_iter)
+
+        x = x.to(args.device)
+        y = y.to(args.device)
 
         optimizer.zero_grad()
         _, loss, _ = model(x, targets=y)

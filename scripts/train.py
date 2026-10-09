@@ -23,6 +23,7 @@ def main():
     parser.add_argument("--hidden_dim", type=int, default=128)
     parser.add_argument("--num_layers", type=int, default=4)
     parser.add_argument("--num_heads", type=int, default=4)
+    parser.add_argument("--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu")
     parser.add_argument("--experiment_id", type=str, default="exp_pretrain_v1")
     args = parser.parse_args()
 
@@ -78,7 +79,7 @@ def main():
         save_every_steps=50,
         eval_every_steps=50,
         experiment_id=args.experiment_id,
-        device="cpu",
+        device=args.device,
     )
 
     results = trainer.train()
