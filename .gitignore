@@ -1,0 +1,43 @@
+# Ari-LLM / LAYA-LLM
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Artifacts & Checkpoints
+checkpoints/
+artifacts/models/
+artifacts/checkpoints/
+artifacts/cache/
+*.pt
+*.pth
+*.bin
+*.onnx
+data/raw/
+data/cache/
+*.log
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
