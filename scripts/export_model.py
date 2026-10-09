@@ -1,10 +1,10 @@
-"""Export LAYA-LLM to ONNX format."""
+"""Export Ari-LLM to ONNX format."""
 
 import os
 import argparse
 import torch
 
-from layallm.training.checkpoint import load_checkpoint
+from arillm.training.checkpoint import load_checkpoint
 
 
 class OnnxExportWrapper(torch.nn.Module):
@@ -39,4 +39,4 @@ def export_onnx(checkpoint_path: str, output_path: str):
 
 
 if __name__ == "__main__":
-    export_onnx("artifacts/checkpoints/exp_pretrain_v1_best.pt", "artifacts/models/laya_model.onnx")
+    export_onnx("artifacts/checkpoints/exp_pretrain_v1_best.pt", "artifacts/models/ari_model.onnx")

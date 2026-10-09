@@ -1,4 +1,4 @@
-"""Training loop and engine for LAYA-LLM."""
+"""Training loop and engine for Ari-LLM."""
 
 import os
 import time
@@ -7,9 +7,9 @@ from typing import Optional, Dict, Any, Callable
 import torch
 from torch.utils.data import DataLoader
 
-from layallm.model.transformer import LayaTransformer
-from layallm.training.optimizer import create_optimizer, create_cosine_scheduler
-from layallm.training.checkpoint import save_checkpoint, load_checkpoint
+from arillm.model.transformer import AriTransformer
+from arillm.training.optimizer import create_optimizer, create_cosine_scheduler
+from arillm.training.checkpoint import save_checkpoint, load_checkpoint
 
 
 class Trainer:
@@ -17,7 +17,7 @@ class Trainer:
 
     def __init__(
         self,
-        model: LayaTransformer,
+        model: AriTransformer,
         train_loader: DataLoader,
         val_loader: Optional[DataLoader] = None,
         learning_rate: float = 3e-4,

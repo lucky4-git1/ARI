@@ -1,4 +1,4 @@
-"""LAYA-LLM Decoder-only Transformer Architecture implemented from scratch."""
+"""Ari-LLM Decoder-only Transformer Architecture implemented from scratch."""
 
 from typing import Optional, Tuple, Dict, Any, List
 import math
@@ -6,11 +6,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from layallm.model.config import ModelConfig
-from layallm.model.normalization import RMSNorm
-from layallm.model.attention import CausalSelfAttention, precompute_rope_freqs_cis
-from layallm.model.mlp import SwiGLUMLP
-from layallm.model.initialization import init_weights, apply_residual_scaling
+from arillm.model.config import ModelConfig
+from arillm.model.normalization import RMSNorm
+from arillm.model.attention import CausalSelfAttention, precompute_rope_freqs_cis
+from arillm.model.mlp import SwiGLUMLP
+from arillm.model.initialization import init_weights, apply_residual_scaling
 
 
 class TransformerBlock(nn.Module):
@@ -54,8 +54,8 @@ class TransformerBlock(nn.Module):
         return x, new_kv_cache
 
 
-class LayaTransformer(nn.Module):
-    """Decoder-only Transformer Language Model (Ari-LLM / LAYA-LLM)."""
+class AriTransformer(nn.Module):
+    """Decoder-only Transformer Language Model (Ari-LLM / Ari-LLM)."""
 
     def __init__(self, config: ModelConfig):
         super().__init__()

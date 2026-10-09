@@ -2,13 +2,13 @@
 
 import math
 import torch
-from layallm.model.transformer import LayaTransformer
-from layallm.tokenizer.tokenizer import LayaTokenizer
-from layallm.training.checkpoint import load_checkpoint
-from layallm.inference.generate import CPUInferenceEngine
+from arillm.model.transformer import AriTransformer
+from arillm.tokenizer.tokenizer import AriTokenizer
+from arillm.training.checkpoint import load_checkpoint
+from arillm.inference.generate import CPUInferenceEngine
 
 
-def evaluate_perplexity(model: LayaTransformer, tokenizer: LayaTokenizer, text: str) -> float:
+def evaluate_perplexity(model: AriTransformer, tokenizer: AriTokenizer, text: str) -> float:
     """Computes token-level perplexity on a held-out text passage."""
     model.eval()
     ids = tokenizer.encode(text)
@@ -39,7 +39,7 @@ def run_code_completion_eval(engine: CPUInferenceEngine):
 if __name__ == "__main__":
     loaded = load_checkpoint("artifacts/checkpoints/exp_pretrain_v1_best.pt", device="cpu")
     model = loaded["model"]
-    tokenizer = LayaTokenizer.load("artifacts/tokenizers/laya_tokenizer.json")
+    tokenizer = AriTokenizer.load("artifacts/tokenizers/ari_tokenizer.json")
     
     test_text = "A Transformer is a deep learning architecture based on multi-head attention."
     ppl = evaluate_perplexity(model, tokenizer, test_text)

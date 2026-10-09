@@ -1,17 +1,17 @@
-"""Local HTTP API using FastAPI for LAYA-LLM inference."""
+"""Local HTTP API using FastAPI for Ari-LLM inference."""
 
 from typing import Optional
 from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
 import torch
 
-from layallm.model.config import ModelConfig
-from layallm.model.transformer import LayaTransformer
-from layallm.tokenizer.tokenizer import LayaTokenizer
-from layallm.training.checkpoint import load_checkpoint
-from layallm.inference.generate import CPUInferenceEngine
+from arillm.model.config import ModelConfig
+from arillm.model.transformer import AriTransformer
+from arillm.tokenizer.tokenizer import AriTokenizer
+from arillm.training.checkpoint import load_checkpoint
+from arillm.inference.generate import CPUInferenceEngine
 
-app = FastAPI(title="LAYA-LLM Inference API", version="0.1.0")
+app = FastAPI(title="Ari-LLM Inference API", version="0.1.0")
 
 # Global engine container
 engine: Optional[CPUInferenceEngine] = None
@@ -43,7 +43,7 @@ class ModelInfoResponse(BaseModel):
 def initialize_api(checkpoint_path: str, tokenizer_path: str):
     """Loads checkpoint and tokenizer into memory for serving."""
     global engine
-    tokenizer = LayaTokenizer.load(tokenizer_path)
+    tokenizer = AriTokenizer.load(tokenizer_path)
     loaded = load_checkpoint(checkpoint_path, device="cpu")
     model = loaded["model"]
     engine = CPUInferenceEngine(model, tokenizer, num_threads=4)

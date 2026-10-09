@@ -1,13 +1,13 @@
 """Tokenizer package exports."""
 
-from layallm.tokenizer.tokenizer import (
+from arillm.tokenizer.tokenizer import (
     train_bpe_tokenizer,
-    LayaTokenizer,
+    AriTokenizer,
     SPECIAL_TOKENS,
 )
 
 __all__ = [
     "train_bpe_tokenizer",
-    "LayaTokenizer",
+    "AriTokenizer",
     "SPECIAL_TOKENS",
 ]

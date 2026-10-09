@@ -1,4 +1,4 @@
-"""Prepares synthetic and permissively licensed seed dataset for LAYA-LLM Stage A/B."""
+"""Prepares synthetic and permissively licensed seed dataset for Ari-LLM Stage A/B."""
 
 import os
 import json

@@ -1,0 +1,157 @@
+A computer is a machine that can be programmed to carry out sequences of arithmetic or logical operations automatically.
+Modern digital electronic computers can perform generic sets of operations known as programs. These programs enable computers to perform a wide range of tasks.
+A Transformer is a deep learning architecture developed by researchers at Google and based on the multi-head attention mechanism.
+In natural language processing, language models assign probabilities to sequences of words or tokens. Autoregressive language models predict the next token given preceding context.
+Rotary Positional Embedding, or RoPE, encodes positional information by multiplying key and query representations with rotation matrices.
+Grouped Query Attention reduces the memory bandwidth requirement during autoregressive generation by sharing key and value heads across multiple query heads.
+Root Mean Square Layer Normalization simplifies LayerNorm by scaling inputs by their root mean square, skipping the mean centering step.
+SwiGLU is an activation function and MLP variant that combines the Swish function with gated linear units, providing superior convergence characteristics in large transformers.
+Loss functions in generative language modeling measure the cross-entropy difference between the predicted next token probability distribution and the true target token.
+Optimization algorithms such as AdamW decouple weight decay from gradient updates, stabilizing training dynamics and preventing overfitting.
+The Central Processing Unit, or CPU, executes machine code instructions through fetch, decode, and execute stages, utilizing hardware caches for speed.
+Quantization in neural networks reduces numerical precision of weights and activations from 32-bit floating point down to 8-bit or 4-bit integers, reducing memory consumption.
+Checkpoints capture model weights, optimizer states, learning rate schedules, and step counts so that training can be resumed safely after interruption.
+A tokenizer converts raw character strings into discrete integer identifiers called tokens using algorithms such as Byte-Pair Encoding.
+Deduplication prevents language models from memorizing repeated training text, improving generalization and downstream performance.
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    return arr
+def binary_search(arr, target):
+    low = 0
+    high = len(arr) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+def quicksort(arr):
+    if len(arr) <= 1:
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quicksort(left) + middle + quicksort(right)
+def fibonacci(n):
+    if n <= 0:
+        return 0
+    elif n == 1:
+        return 1
+    a, b = 0, 1
+    for _ in range(2, n + 1):
+        a, b = b, a + b
+    return b
+def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+    return True
+def reverse_string(s):
+    return s[::-1]
+def count_vowels(text):
+    vowels = set('aeiouAEIOU')
+    return sum(1 for char in text if char in vowels)
+def merge_sorted_lists(l1, l2):
+    res = []
+    i = j = 0
+    while i < len(l1) and j < len(l2):
+        if l1[i] < l2[j]:
+            res.append(l1[i])
+            i += 1
+            res.append(l2[j])
+            j += 1
+    res.extend(l1[i:])
+    res.extend(l2[j:])
+    return res
+function linearSearch(arr, target) {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === target) return i;
+    }
+    return -1;
+function factorial(n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+def quickselect(arr, k):
+    if len(arr) == 1:
+        return arr[0]
+    lows = [x for x in arr if x < pivot]
+    highs = [x for x in arr if x > pivot]
+    pivots = [x for x in arr if x == pivot]
+    if k < len(lows):
+        return quickselect(lows, k)
+    elif k < len(lows) + len(pivots):
+        return pivot
+        return quickselect(highs, k - len(lows) - len(pivots))
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}
+    def get(self, key: int) -> int:
+        if key not in self.cache:
+        val = self.cache.pop(key)
+        self.cache[key] = val
+        return val
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            self.cache.pop(key)
+        elif len(self.cache) >= self.capacity:
+            del self.cache[next(iter(self.cache))]
+        self.cache[key] = value
+def dijkstra(graph, start):
+    import heapq
+    distances = {node: float('infinity') for node in graph}
+    distances[start] = 0
+    queue = [(0, start)]
+    while queue:
+        curr_dist, curr_node = heapq.heappop(queue)
+        if curr_dist > distances[curr_node]:
+            continue
+        for neighbor, weight in graph[curr_node].items():
+            distance = curr_dist + weight
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(queue, (distance, neighbor))
+    return distances
+function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+        const context = this;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+async function fetchJsonWithRetry(url, retries = 3) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return await response.json();
+        } catch (err) {
+            if (i === retries - 1) throw err;
+void reverseArray(int arr[], int start, int end) {
+    while (start < end) {
+        int temp = arr[start];
+        arr[start] = arr[end];
+        arr[end] = temp;
+        start++;
+        end--;
+int binarySearchIterative(int arr[], int l, int r, int x) {
+    while (l <= r) {
+        int m = l + (r - l) / 2;
+        if (arr[m] == x) return m;
+        if (arr[m] < x) l = m + 1;
+        else r = m - 1;
+SELECT department_id, COUNT(*) as employee_count, AVG(salary) as average_salary FROM employees WHERE hire_date >= '2020-01-01' GROUP BY department_id HAVING COUNT(*) > 5 ORDER BY average_salary DESC;
+#!/bin/bash
+set -euo pipefail
+find . -type f -name '*.py' | while read -r file; do
+    echo "Processing: $file"
+    python -m py_compile "$file"
+done

@@ -1,4 +1,4 @@
-"""BPE Tokenizer trainer and wrapper for LAYA-LLM."""
+"""BPE Tokenizer trainer and wrapper for Ari-LLM."""
 
 import os
 from typing import List, Optional, Union
@@ -10,7 +10,7 @@ from tokenizers.decoders import ByteLevel as ByteLevelDecoder
 from tokenizers.processors import TemplateProcessing
 
 
-# Standard special tokens for LAYA-LLM
+# Standard special tokens for Ari-LLM
 SPECIAL_TOKENS = [
     "<pad>",     # ID 0: Padding token
     "<unk>",     # ID 1: Unknown token
@@ -52,7 +52,7 @@ def train_bpe_tokenizer(
     return tokenizer
 
 
-class LayaTokenizer:
+class AriTokenizer:
     """Wrapper around trained HuggingFace Tokenizer with convenient helpers."""
 
     def __init__(self, tokenizer_file: Optional[str] = None):
@@ -67,7 +67,7 @@ class LayaTokenizer:
         self.eos_token_id = 3
 
     @classmethod
-    def load(cls, path: str) -> "LayaTokenizer":
+    def load(cls, path: str) -> "AriTokenizer":
         wrapper = cls()
         wrapper.tokenizer = Tokenizer.from_file(path)
         # Update special token IDs

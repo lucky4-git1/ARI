@@ -1,25 +1,25 @@
-"""CPU Inference Benchmark script for LAYA-LLM."""
+"""CPU Inference Benchmark script for Ari-LLM."""
 
 import argparse
 import json
 import torch
 
-from layallm.tokenizer.tokenizer import LayaTokenizer
-from layallm.training.checkpoint import load_checkpoint
-from layallm.inference.generate import CPUInferenceEngine
+from arillm.tokenizer.tokenizer import AriTokenizer
+from arillm.training.checkpoint import load_checkpoint
+from arillm.inference.generate import CPUInferenceEngine
 
 
 def main():
     parser = argparse.ArgumentParser(description="Benchmark CPU inference performance")
     parser.add_argument("--checkpoint", type=str, default="artifacts/checkpoints/exp_pretrain_v1_best.pt")
-    parser.add_argument("--tokenizer", type=str, default="artifacts/tokenizers/laya_tokenizer.json")
+    parser.add_argument("--tokenizer", type=str, default="artifacts/tokenizers/ari_tokenizer.json")
     parser.add_argument("--threads", type=int, default=4)
     parser.add_argument("--tokens", type=int, default=40)
     args = parser.parse_args()
 
     loaded = load_checkpoint(args.checkpoint, device="cpu")
     model = loaded["model"]
-    tokenizer = LayaTokenizer.load(args.tokenizer)
+    tokenizer = AriTokenizer.load(args.tokenizer)
     
     engine = CPUInferenceEngine(model, tokenizer, num_threads=args.threads)
     params = model.count_parameters()["total_parameters"]

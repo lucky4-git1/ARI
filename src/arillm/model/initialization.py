@@ -1,9 +1,9 @@
-"""Parameter initialization routines for LAYA-LLM."""
+"""Parameter initialization routines for Ari-LLM."""
 
 import math
 import torch
 import torch.nn as nn
-from layallm.model.config import ModelConfig
+from arillm.model.config import ModelConfig
 
 
 def init_weights(module: nn.Module, config: ModelConfig):

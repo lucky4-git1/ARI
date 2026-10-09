@@ -6,14 +6,14 @@ import pytest
 import torch
 from torch.utils.data import DataLoader
 
-from layallm.model.config import ModelConfig
-from layallm.model.transformer import LayaTransformer
-from layallm.tokenizer.tokenizer import train_bpe_tokenizer, LayaTokenizer
-from layallm.data.dataset import CausalLMDataset
-from layallm.training.optimizer import create_optimizer, create_cosine_scheduler
-from layallm.training.checkpoint import save_checkpoint, load_checkpoint
-from layallm.training.trainer import Trainer
-from layallm.inference.generate import CPUInferenceEngine
+from arillm.model.config import ModelConfig
+from arillm.model.transformer import AriTransformer
+from arillm.tokenizer.tokenizer import train_bpe_tokenizer, AriTokenizer
+from arillm.data.dataset import CausalLMDataset
+from arillm.training.optimizer import create_optimizer, create_cosine_scheduler
+from arillm.training.checkpoint import save_checkpoint, load_checkpoint
+from arillm.training.trainer import Trainer
+from arillm.inference.generate import CPUInferenceEngine
 
 
 def test_tokenizer_training_and_encoding():
@@ -34,7 +34,7 @@ def test_tokenizer_training_and_encoding():
         assert os.path.exists(tok_file)
 
         # Load wrapper
-        tok = LayaTokenizer.load(tok_file)
+        tok = AriTokenizer.load(tok_file)
         assert tok.vocab_size > 0
 
         # Encode and decode
@@ -51,7 +51,7 @@ def test_tokenizer_training_and_encoding():
 
 def test_checkpoint_atomic_save_load():
     config = ModelConfig(vocab_size=128, hidden_dim=64, num_layers=2, num_heads=4, num_kv_heads=4)
-    model = LayaTransformer(config)
+    model = AriTransformer(config)
     optimizer = create_optimizer(model)
     
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -91,7 +91,7 @@ def test_tiny_training_loop_overfitting():
         intermediate_dim=64,
         max_seq_len=32,
     )
-    model = LayaTransformer(config)
+    model = AriTransformer(config)
 
     # Repeat sequence: [0, 1, 2, ..., 15] 20 times
     tokens = list(range(16)) * 20

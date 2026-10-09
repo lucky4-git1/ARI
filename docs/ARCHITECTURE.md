@@ -1,7 +1,7 @@
-# LAYA-LLM Architecture
+# Ari-LLM Architecture
 
 ## 1. Overview
-LAYA-LLM (Ari-LLM) is an original, compact, decoder-only Transformer language model engineered from scratch. The model starts from randomly initialized parameters and employs modern architectural enhancements:
+Ari-LLM (Ari-LLM) is an original, compact, decoder-only Transformer language model engineered from scratch. The model starts from randomly initialized parameters and employs modern architectural enhancements:
 - **Rotary Position Embeddings (RoPE)**: Applied to query and key projections to provide relative position awareness and length extrapolation without learned absolute positional tables.
 - **Root Mean Square Normalization (RMSNorm)**: Pre-layer normalization with learned scaling parameters, eliminating mean-centering for lower CPU computational overhead.
 - **Grouped-Query Attention (GQA)**: Configurable multi-query or grouped-query attention to dramatically reduce KV-cache memory footprint and accelerate CPU decoding.

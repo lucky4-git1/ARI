@@ -3,7 +3,7 @@
 import os
 import urllib.request
 import json
-from layallm.data.prepare import deduplicate_lines
+from arillm.data.prepare import deduplicate_lines
 
 def download_file(url: str, dest_path: str):
     print(f"Downloading from {url} to {dest_path}...")

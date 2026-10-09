@@ -1,11 +1,11 @@
 """Train BPE Tokenizer from scratch on project corpus."""
 
 import os
-from layallm.tokenizer.tokenizer import train_bpe_tokenizer, LayaTokenizer
+from arillm.tokenizer.tokenizer import train_bpe_tokenizer, AriTokenizer
 
 def run():
     corpus_file = "data/raw/pretrain_corpus.txt"
-    save_file = "artifacts/tokenizers/laya_tokenizer.json"
+    save_file = "artifacts/tokenizers/ari_tokenizer.json"
 
     print(f"Training BPE tokenizer on {corpus_file}...")
     # Using vocab size 2048 for compact model and fast CPU inference
@@ -16,7 +16,7 @@ def run():
         save_path=save_file,
     )
     
-    tokenizer = LayaTokenizer.load(save_file)
+    tokenizer = AriTokenizer.load(save_file)
     print(f"Tokenizer trained successfully! Final vocab size: {tokenizer.vocab_size}")
 
     # Verification

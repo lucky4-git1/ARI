@@ -1,11 +1,11 @@
-"""Rotary Positional Embeddings (RoPE) and Attention mechanisms for LAYA-LLM."""
+"""Rotary Positional Embeddings (RoPE) and Attention mechanisms for Ari-LLM."""
 
 import math
 from typing import Optional, Tuple
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from layallm.model.config import ModelConfig
+from arillm.model.config import ModelConfig
 
 
 def precompute_rope_freqs_cis(dim: int, end: int, theta: float = 10000.0) -> torch.Tensor:

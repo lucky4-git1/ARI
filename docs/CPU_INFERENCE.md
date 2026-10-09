@@ -16,7 +16,7 @@
 ## 3. Serving via Local HTTP API
 Run:
 ```bash
-python -c "from layallm.api.app import app, initialize_api; initialize_api('artifacts/checkpoints/exp_pretrain_v1_best.pt', 'artifacts/tokenizers/laya_tokenizer.json'); import uvicorn; uvicorn.run(app, host='127.0.0.1', port=8000)"
+python -c "from arillm.api.app import app, initialize_api; initialize_api('artifacts/checkpoints/exp_pretrain_v1_best.pt', 'artifacts/tokenizers/ari_tokenizer.json'); import uvicorn; uvicorn.run(app, host='127.0.0.1', port=8000)"
 ```
 Endpoints:
 - `GET /health`

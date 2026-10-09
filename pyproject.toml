@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "layallm"
+name = "arillm"
 version = "0.1.0"
-description = "Ari-LLM / LAYA-LLM: An original, decoder-only Transformer built and trained from scratch with CPU-first inference."
+description = "Ari-LLM / Ari-LLM: An original, decoder-only Transformer built and trained from scratch with CPU-first inference."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [

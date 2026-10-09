@@ -1,4 +1,4 @@
-# Ari-LLM (LAYA-LLM)
+# Ari-LLM (Ari-LLM)
 
 An original, decoder-only Transformer Large Language Model built and trained completely from scratch with random parameter initialization and a CPU-optimized runtime.
 

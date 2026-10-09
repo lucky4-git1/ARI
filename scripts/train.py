@@ -1,21 +1,21 @@
-"""Pretraining script for LAYA-LLM."""
+"""Pretraining script for Ari-LLM."""
 
 import os
 import argparse
 import torch
 from torch.utils.data import DataLoader, random_split
 
-from layallm.model.config import ModelConfig
-from layallm.model.transformer import LayaTransformer
-from layallm.tokenizer.tokenizer import LayaTokenizer
-from layallm.data.dataset import CausalLMDataset
-from layallm.training.trainer import Trainer
+from arillm.model.config import ModelConfig
+from arillm.model.transformer import AriTransformer
+from arillm.tokenizer.tokenizer import AriTokenizer
+from arillm.data.dataset import CausalLMDataset
+from arillm.training.trainer import Trainer
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Pretrain LAYA-LLM from scratch")
+    parser = argparse.ArgumentParser(description="Pretrain Ari-LLM from scratch")
     parser.add_argument("--corpus", type=str, default="data/raw/pretrain_corpus.txt")
-    parser.add_argument("--tokenizer", type=str, default="artifacts/tokenizers/laya_tokenizer.json")
+    parser.add_argument("--tokenizer", type=str, default="artifacts/tokenizers/ari_tokenizer.json")
     parser.add_argument("--max_steps", type=int, default=150)
     parser.add_argument("--batch_size", type=int, default=8)
     parser.add_argument("--seq_len", type=int, default=128)
@@ -28,7 +28,7 @@ def main():
     args = parser.parse_args()
 
     # Load tokenizer
-    tokenizer = LayaTokenizer.load(args.tokenizer)
+    tokenizer = AriTokenizer.load(args.tokenizer)
     print(f"Loaded tokenizer from {args.tokenizer} (Vocab size: {tokenizer.vocab_size})")
 
     # Read and encode text
@@ -63,9 +63,9 @@ def main():
         max_seq_len=args.seq_len,
         tie_word_embeddings=True,
     )
-    model = LayaTransformer(config)
+    model = AriTransformer(config)
     counts = model.count_parameters()
-    print(f"Instantiated original LayaTransformer with {counts['total_parameters']:,} parameters (Weights randomly initialized).")
+    print(f"Instantiated original AriTransformer with {counts['total_parameters']:,} parameters (Weights randomly initialized).")
 
     # Run training
     trainer = Trainer(

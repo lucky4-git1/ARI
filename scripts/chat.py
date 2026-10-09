@@ -1,22 +1,22 @@
-"""Interactive and terminal-based REPL chat interface for LAYA-LLM."""
+"""Interactive and terminal-based REPL chat interface for Ari-LLM."""
 
 import sys
 import argparse
 import torch
 
-from layallm.tokenizer.tokenizer import LayaTokenizer
-from layallm.training.checkpoint import load_checkpoint
-from layallm.inference.generate import CPUInferenceEngine
+from arillm.tokenizer.tokenizer import AriTokenizer
+from arillm.training.checkpoint import load_checkpoint
+from arillm.inference.generate import CPUInferenceEngine
 
 
 def start_chat(checkpoint_path: str, tokenizer_path: str, temperature: float = 0.7):
     print("=" * 60)
-    print("         Ari-LLM / LAYA-LLM Interactive Console")
+    print("         Ari-LLM / Ari-LLM Interactive Console")
     print("=" * 60)
     print(f"Loading checkpoint: {checkpoint_path}")
     loaded = load_checkpoint(checkpoint_path, device="cpu")
     model = loaded["model"]
-    tokenizer = LayaTokenizer.load(tokenizer_path)
+    tokenizer = AriTokenizer.load(tokenizer_path)
     engine = CPUInferenceEngine(model, tokenizer, num_threads=4)
     params = model.count_parameters()["total_parameters"]
     print(f"Model online: {params:,} parameters (CPU 4 threads)")
@@ -54,7 +54,7 @@ def start_chat(checkpoint_path: str, tokenizer_path: str, temperature: float = 0
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Ari-LLM Interactive Console")
     parser.add_argument("--checkpoint", type=str, default="artifacts/checkpoints/exp_pretrain_v1_best.pt")
-    parser.add_argument("--tokenizer", type=str, default="artifacts/tokenizers/laya_tokenizer.json")
+    parser.add_argument("--tokenizer", type=str, default="artifacts/tokenizers/ari_tokenizer.json")
     parser.add_argument("--temperature", type=float, default=0.7)
     args = parser.parse_args()
 

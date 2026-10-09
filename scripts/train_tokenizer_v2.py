@@ -1,11 +1,11 @@
 """Trains general language + code BPE tokenizer with 4096 vocabulary size."""
 
 import os
-from layallm.tokenizer.tokenizer import train_bpe_tokenizer, LayaTokenizer
+from arillm.tokenizer.tokenizer import train_bpe_tokenizer, AriTokenizer
 
 def train_main_tokenizer():
     corpus_file = "data/processed/combined_language_code_corpus.txt"
-    save_file = "artifacts/tokenizers/laya_tokenizer_v2.json"
+    save_file = "artifacts/tokenizers/ari_tokenizer_v2.json"
 
     print(f"Training unified BPE tokenizer on {corpus_file} (12.4 MB)...")
     train_bpe_tokenizer(
@@ -15,7 +15,7 @@ def train_main_tokenizer():
         save_path=save_file,
     )
     
-    tokenizer = LayaTokenizer.load(save_file)
+    tokenizer = AriTokenizer.load(save_file)
     print(f"Tokenizer trained successfully! Final vocab size: {tokenizer.vocab_size}")
 
     # Verification on both prose and code

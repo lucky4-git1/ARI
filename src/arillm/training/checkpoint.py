@@ -6,13 +6,13 @@ import tempfile
 from typing import Dict, Any, Optional, Union
 import torch
 
-from layallm.model.config import ModelConfig
-from layallm.model.transformer import LayaTransformer
+from arillm.model.config import ModelConfig
+from arillm.model.transformer import AriTransformer
 
 
 def save_checkpoint(
     save_path: str,
-    model: LayaTransformer,
+    model: AriTransformer,
     optimizer: Optional[torch.optim.Optimizer] = None,
     scheduler: Optional[Any] = None,
     step: int = 0,
@@ -60,7 +60,7 @@ def load_checkpoint(
 
     checkpoint = torch.load(checkpoint_path, map_location=device)
     config = ModelConfig.from_dict(checkpoint["model_config"])
-    model = LayaTransformer(config).to(device)
+    model = AriTransformer(config).to(device)
     model.load_state_dict(checkpoint["model_state_dict"])
 
     if load_optimizer and optimizer is not None and "optimizer_state_dict" in checkpoint:

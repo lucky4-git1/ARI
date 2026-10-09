@@ -4,16 +4,16 @@ import argparse
 import torch
 from torch.utils.data import DataLoader
 
-from layallm.tokenizer.tokenizer import LayaTokenizer
-from layallm.training.checkpoint import load_checkpoint, save_checkpoint
-from layallm.data.dataset import SFTDataset, collate_sft
-from layallm.training.optimizer import create_optimizer, create_cosine_scheduler
+from arillm.tokenizer.tokenizer import AriTokenizer
+from arillm.training.checkpoint import load_checkpoint, save_checkpoint
+from arillm.data.dataset import SFTDataset, collate_sft
+from arillm.training.optimizer import create_optimizer, create_cosine_scheduler
 
 
 def main():
     parser = argparse.ArgumentParser(description="Supervised Fine-Tuning (SFT) on instruction pairs")
     parser.add_argument("--base_checkpoint", type=str, default="artifacts/checkpoints/exp_pretrain_v1_best.pt")
-    parser.add_argument("--tokenizer", type=str, default="artifacts/tokenizers/laya_tokenizer.json")
+    parser.add_argument("--tokenizer", type=str, default="artifacts/tokenizers/ari_tokenizer.json")
     parser.add_argument("--sft_data", type=str, default="data/processed/sft_data.jsonl")
     parser.add_argument("--max_steps", type=int, default=60)
     parser.add_argument("--batch_size", type=int, default=4)
@@ -22,7 +22,7 @@ def main():
     parser.add_argument("--output_checkpoint", type=str, default="artifacts/checkpoints/exp_sft_v1.pt")
     args = parser.parse_args()
 
-    tokenizer = LayaTokenizer.load(args.tokenizer)
+    tokenizer = AriTokenizer.load(args.tokenizer)
     loaded = load_checkpoint(args.base_checkpoint, device=args.device)
     model = loaded["model"].to(args.device)
     print(f"Loaded base pretrained model from {args.base_checkpoint}")

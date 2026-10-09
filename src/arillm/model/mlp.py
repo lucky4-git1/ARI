@@ -1,9 +1,9 @@
-"""Feed-Forward Networks and SwiGLU MLP for LAYA-LLM."""
+"""Feed-Forward Networks and SwiGLU MLP for Ari-LLM."""
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from layallm.model.config import ModelConfig
+from arillm.model.config import ModelConfig
 
 
 class SwiGLUMLP(nn.Module):

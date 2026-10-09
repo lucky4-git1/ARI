@@ -1,4 +1,4 @@
-"""Normalization layers for LAYA-LLM."""
+"""Normalization layers for Ari-LLM."""
 
 import torch
 import torch.nn as nn

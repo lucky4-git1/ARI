@@ -4,7 +4,7 @@ import json
 from typing import List, Optional, Tuple
 import torch
 from torch.utils.data import Dataset
-from layallm.tokenizer.tokenizer import LayaTokenizer
+from arillm.tokenizer.tokenizer import AriTokenizer
 
 
 class CausalLMDataset(Dataset):
@@ -42,7 +42,7 @@ class SFTDataset(Dataset):
     def __init__(
         self,
         jsonl_path: str,
-        tokenizer: LayaTokenizer,
+        tokenizer: AriTokenizer,
         max_seq_len: int = 512,
     ):
         self.examples = []

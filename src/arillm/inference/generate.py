@@ -5,8 +5,8 @@ from typing import Optional, Dict, Any, Generator
 import torch
 import torch.nn.functional as F
 
-from layallm.model.transformer import LayaTransformer
-from layallm.tokenizer.tokenizer import LayaTokenizer
+from arillm.model.transformer import AriTransformer
+from arillm.tokenizer.tokenizer import AriTokenizer
 
 
 class CPUInferenceEngine:
@@ -14,8 +14,8 @@ class CPUInferenceEngine:
 
     def __init__(
         self,
-        model: LayaTransformer,
-        tokenizer: LayaTokenizer,
+        model: AriTransformer,
+        tokenizer: AriTokenizer,
         num_threads: int = 4,
     ):
         self.model = model.eval()

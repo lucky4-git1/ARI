@@ -1,4 +1,4 @@
-"""Model configuration dataclass for LAYA-LLM."""
+"""Model configuration dataclass for Ari-LLM."""
 
 from dataclasses import dataclass, field
 from typing import Optional, Dict, Any

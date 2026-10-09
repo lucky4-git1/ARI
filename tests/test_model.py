@@ -1,12 +1,12 @@
-"""Unit tests for LAYA-LLM Architecture components."""
+"""Unit tests for Ari-LLM Architecture components."""
 
 import pytest
 import torch
-from layallm.model.config import ModelConfig, CONFIG_PRESETS
-from layallm.model.normalization import RMSNorm
-from layallm.model.attention import CausalSelfAttention, precompute_rope_freqs_cis
-from layallm.model.mlp import SwiGLUMLP
-from layallm.model.transformer import LayaTransformer
+from arillm.model.config import ModelConfig, CONFIG_PRESETS
+from arillm.model.normalization import RMSNorm
+from arillm.model.attention import CausalSelfAttention, precompute_rope_freqs_cis
+from arillm.model.mlp import SwiGLUMLP
+from arillm.model.transformer import AriTransformer
 
 
 def test_model_config_presets():
@@ -63,7 +63,7 @@ def test_transformer_forward_backward():
         intermediate_dim=128,
         max_seq_len=64,
     )
-    model = LayaTransformer(config)
+    model = AriTransformer(config)
     
     # Check parameter count
     counts = model.count_parameters()
@@ -89,7 +89,7 @@ def test_transformer_forward_backward():
 def test_causality():
     """Verify that earlier token representations are not affected by future tokens."""
     config = ModelConfig(vocab_size=128, hidden_dim=64, num_layers=2, num_heads=4, num_kv_heads=4)
-    model = LayaTransformer(config)
+    model = AriTransformer(config)
     model.eval()
 
     input1 = torch.tensor([[5, 10, 15, 20]])
@@ -107,7 +107,7 @@ def test_causality():
 
 def test_generation():
     config = ModelConfig(vocab_size=128, hidden_dim=64, num_layers=2, num_heads=4, num_kv_heads=4)
-    model = LayaTransformer(config)
+    model = AriTransformer(config)
     prompt = torch.tensor([[10, 20]])
     generated = model.generate(prompt, max_new_tokens=10, temperature=0.7)
     assert generated.shape == (1, 12)

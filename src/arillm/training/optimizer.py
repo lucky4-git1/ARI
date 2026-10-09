@@ -1,4 +1,4 @@
-"""Optimizer and learning rate scheduler builders for LAYA-LLM."""
+"""Optimizer and learning rate scheduler builders for Ari-LLM."""
 
 import math
 import torch
