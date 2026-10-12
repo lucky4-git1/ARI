@@ -1,0 +1,78 @@
+{
+  "checkpoint": "artifacts/checkpoints/exp_kaggle_sft_best.pt",
+  "total_parameters": 14555520,
+  "overall_score": 55.8,
+  "held_out_perplexity": {
+    "loss": 5.1149,
+    "perplexity": 166.49
+  },
+  "code_execution": {
+    "passed": 1,
+    "total": 3,
+    "accuracy_percent": 33.3,
+    "details": [
+      {
+        "function": "is_balanced",
+        "passed": false,
+        "error": "invalid syntax (<string>, line 1)",
+        "snippet": "```python\ndef is_balanced(s: str) -> bool:\n    stack = []\n    pairs = {')': '(', '}': '{', ']': '['}"
+      },
+      {
+        "function": "binary_search",
+        "passed": false,
+        "error": "invalid syntax (<string>, line 1)",
+        "snippet": "```python\ndef binary_search(arr, target):\n    low, high = 0, len(arr) - 1\n    while low <= high:"
+      },
+      {
+        "function": "reverse_string",
+        "passed": true,
+        "error": "",
+        "snippet": "def reverse_string(s):\n    return s[::-1]"
+      }
+    ]
+  },
+  "format_compliance": {
+    "passed": 2,
+    "total": 4,
+    "compliance_percent": 50.0,
+    "details": [
+      {
+        "check": "HTML Landing Page Format",
+        "passed": true,
+        "output_sample": "```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Ari-LLM"
+      },
+      {
+        "check": "SQL Query Format",
+        "passed": false,
+        "output_sample": "```sql\nSELECT \n    c.customer_id,\n    c.customer_id,\n    o.order_id,\n    o.order_date,"
+      },
+      {
+        "check": "JavaScript Function Format",
+        "passed": false,
+        "output_sample": "```javascript\nfunction debounce(func, font = 300) {\n  let timeoutId;\n  return function(..."
+      },
+      {
+        "check": "Conversational Greeting",
+        "passed": true,
+        "output_sample": "Hello! I am Ari-LLM, your machine. It can I help you today?<eos>"
+      }
+    ]
+  },
+  "reasoning_accuracy": {
+    "passed": 2,
+    "total": 2,
+    "accuracy_percent": 100.0,
+    "details": [
+      {
+        "problem": "Distance Speed Time",
+        "passed": true,
+        "output_sample": "Distance equals speed multiplied by time:\n1. Speed = 60 mph\n2. Time = 2.5 hours\n3. Calculation: 60 *"
+      },
+      {
+        "problem": "Prime Number Logic",
+        "passed": true,
+        "output_sample": "Yes, 17 is a prime number. To determine this step-by-step:\n1. A prime number is greater than 1 with"
+      }
+    ]
+  }
+}

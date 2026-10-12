@@ -24,6 +24,11 @@ class ModelConfig:
     # RoPE settings
     rope_theta: float = 10000.0
     
+    # Mixture of Experts (MoE) settings
+    num_experts: int = 1  # 1 = standard dense model, >1 = Sparse MoE
+    num_experts_per_tok: int = 1  # Top-K experts activated per token
+    moe_aux_loss_coeff: float = 0.01  # Load balancing auxiliary loss coefficient
+    
     # Weight tying
     tie_word_embeddings: bool = True
     
@@ -45,6 +50,10 @@ class ModelConfig:
         assert self.num_heads % self.num_kv_heads == 0, (
             f"num_heads ({self.num_heads}) must be divisible by num_kv_heads ({self.num_kv_heads})"
         )
+        if self.num_experts > 1:
+            assert 1 <= self.num_experts_per_tok <= self.num_experts, (
+                f"num_experts_per_tok ({self.num_experts_per_tok}) must be between 1 and num_experts ({self.num_experts})"
+            )
 
     @property
     def head_dim(self) -> int:
@@ -62,6 +71,9 @@ class ModelConfig:
             "norm_eps": self.norm_eps,
             "dropout": self.dropout,
             "rope_theta": self.rope_theta,
+            "num_experts": self.num_experts,
+            "num_experts_per_tok": self.num_experts_per_tok,
+            "moe_aux_loss_coeff": self.moe_aux_loss_coeff,
             "tie_word_embeddings": self.tie_word_embeddings,
             "init_std": self.init_std,
         }
@@ -126,5 +138,19 @@ CONFIG_PRESETS: Dict[str, ModelConfig] = {
         intermediate_dim=2048,
         max_seq_len=2048,
         tie_word_embeddings=True,
+    ),
+    # 5. Sparse MoE CPU model (~35M params total, ~12M active params per token)
+    "moe_cpu_fast": ModelConfig(
+        vocab_size=8192,
+        hidden_dim=256,
+        num_layers=8,
+        num_heads=8,
+        num_kv_heads=4,  # GQA
+        intermediate_dim=682,
+        max_seq_len=512,
+        tie_word_embeddings=True,
+        num_experts=4,
+        num_experts_per_tok=2,
+        moe_aux_loss_coeff=0.01,
     ),
 }

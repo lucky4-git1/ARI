@@ -32,8 +32,14 @@ artifacts/cache/
 *.pth
 *.bin
 *.onnx
+*.safetensors
+*.zip
 data/raw/
 data/cache/
+data/processed/
+data/knowledge/
+data/partitioned/
+kaggle_job/
 *.log
 
 # IDE & OS

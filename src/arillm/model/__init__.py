@@ -4,6 +4,7 @@ from arillm.model.config import ModelConfig, CONFIG_PRESETS
 from arillm.model.normalization import RMSNorm
 from arillm.model.attention import CausalSelfAttention, precompute_rope_freqs_cis
 from arillm.model.mlp import SwiGLUMLP
+from arillm.model.moe import SparseMoEBlock
 from arillm.model.transformer import AriTransformer, TransformerBlock
 
 __all__ = [
@@ -13,6 +14,7 @@ __all__ = [
     "CausalSelfAttention",
     "precompute_rope_freqs_cis",
     "SwiGLUMLP",
+    "SparseMoEBlock",
     "AriTransformer",
     "TransformerBlock",
 ]

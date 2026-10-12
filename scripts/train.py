@@ -23,6 +23,8 @@ def main():
     parser.add_argument("--hidden_dim", type=int, default=128)
     parser.add_argument("--num_layers", type=int, default=4)
     parser.add_argument("--num_heads", type=int, default=4)
+    parser.add_argument("--num_experts", type=int, default=1, help="Total number of experts (1 = dense)")
+    parser.add_argument("--num_experts_per_tok", type=int, default=1, help="Number of active experts per token")
     parser.add_argument("--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu")
     parser.add_argument("--experiment_id", type=str, default="exp_pretrain_v1")
     args = parser.parse_args()
@@ -62,10 +64,15 @@ def main():
         num_kv_heads=args.num_heads // 2 if args.num_heads >= 4 else args.num_heads,
         max_seq_len=args.seq_len,
         tie_word_embeddings=True,
+        num_experts=args.num_experts,
+        num_experts_per_tok=args.num_experts_per_tok,
     )
     model = AriTransformer(config)
     counts = model.count_parameters()
-    print(f"Instantiated original AriTransformer with {counts['total_parameters']:,} parameters (Weights randomly initialized).")
+    print(
+        f"Instantiated original AriTransformer with {counts['total_parameters']:,} total parameters "
+        f"({counts['active_parameters']:,} active params per token, random weight initialization)."
+    )
 
     # Run training
     trainer = Trainer(

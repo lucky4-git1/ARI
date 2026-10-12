@@ -10,11 +10,12 @@ from arillm.model.config import ModelConfig
 from arillm.model.normalization import RMSNorm
 from arillm.model.attention import CausalSelfAttention, precompute_rope_freqs_cis
 from arillm.model.mlp import SwiGLUMLP
+from arillm.model.moe import SparseMoEBlock
 from arillm.model.initialization import init_weights, apply_residual_scaling
 
 
 class TransformerBlock(nn.Module):
-    """Transformer decoder block with Pre-RMSNorm, Causal GQA Self-Attention, and SwiGLU MLP."""
+    """Transformer decoder block with Pre-RMSNorm, Causal GQA Self-Attention, and SwiGLU / MoE MLP."""
 
     def __init__(self, layer_id: int, config: ModelConfig):
         super().__init__()
@@ -25,7 +26,12 @@ class TransformerBlock(nn.Module):
         self.attention = CausalSelfAttention(config)
         
         self.mlp_norm = RMSNorm(config.hidden_dim, eps=config.norm_eps)
-        self.mlp = SwiGLUMLP(config)
+        if config.num_experts > 1:
+            self.mlp = SparseMoEBlock(config)
+            self.is_moe = True
+        else:
+            self.mlp = SwiGLUMLP(config)
+            self.is_moe = False
 
     def forward(
         self,
@@ -34,7 +40,7 @@ class TransformerBlock(nn.Module):
         attention_mask: Optional[torch.Tensor] = None,
         kv_cache: Optional[Tuple[torch.Tensor, torch.Tensor]] = None,
         use_cache: bool = False,
-    ) -> Tuple[torch.Tensor, Optional[Tuple[torch.Tensor, torch.Tensor]]]:
+    ) -> Tuple[torch.Tensor, Optional[Tuple[torch.Tensor, torch.Tensor]], Optional[torch.Tensor]]:
         # Pre-norm Self-Attention with residual
         normed_attn = self.attn_norm(x)
         attn_out, new_kv_cache = self.attention(
@@ -46,12 +52,16 @@ class TransformerBlock(nn.Module):
         )
         x = x + attn_out
 
-        # Pre-norm MLP with residual
+        # Pre-norm MLP / MoE with residual
         normed_mlp = self.mlp_norm(x)
-        mlp_out = self.mlp(normed_mlp)
+        if self.is_moe:
+            mlp_out, aux_loss = self.mlp(normed_mlp)
+        else:
+            mlp_out = self.mlp(normed_mlp)
+            aux_loss = None
         x = x + mlp_out
 
-        return x, new_kv_cache
+        return x, new_kv_cache, aux_loss
 
 
 class AriTransformer(nn.Module):
@@ -128,14 +138,24 @@ class AriTransformer(nn.Module):
 
         # Slice precomputed RoPE frequencies for the current sequence slice
         end_pos = start_pos + seq_len
+        if end_pos > self.freqs_cis.shape[0]:
+            # Dynamically compute higher position frequencies if needed
+            new_end = max(end_pos, self.freqs_cis.shape[0] * 2)
+            self.freqs_cis = precompute_rope_freqs_cis(
+                dim=self.config.head_dim,
+                end=new_end,
+                theta=self.config.rope_theta,
+            ).to(self.freqs_cis.device)
+
         freqs_cis = self.freqs_cis[start_pos:end_pos].to(device)
 
         new_kv_caches = [] if use_cache else None
+        total_aux_loss = 0.0
 
         # Pass through Transformer blocks
         for i, layer in enumerate(self.layers):
             layer_cache = kv_caches[i] if kv_caches is not None else None
-            h, updated_cache = layer(
+            h, updated_cache, layer_aux_loss = layer(
                 h,
                 freqs_cis=freqs_cis,
                 attention_mask=None,
@@ -144,6 +164,8 @@ class AriTransformer(nn.Module):
             )
             if use_cache:
                 new_kv_caches.append(updated_cache)
+            if layer_aux_loss is not None:
+                total_aux_loss = total_aux_loss + layer_aux_loss
 
         # Final normalization
         h = self.norm(h)
@@ -165,20 +187,36 @@ class AriTransformer(nn.Module):
                 targets.view(-1),
                 ignore_index=-100,
             )
+            if isinstance(total_aux_loss, torch.Tensor) or total_aux_loss > 0.0:
+                loss = loss + total_aux_loss
 
         return logits, loss, new_kv_caches
 
     def count_parameters(self) -> Dict[str, int]:
-        """Calculates total and trainable parameter counts."""
+        """Calculates total, active, and trainable parameter counts."""
         total_params = sum(p.numel() for p in self.parameters())
         trainable_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
         
+        # Calculate active parameters per token
+        if self.config.num_experts > 1:
+            expert_params = sum(
+                p.numel() for n, p in self.named_parameters() if ".experts." in n
+            )
+            base_params = total_params - expert_params
+            active_expert_params = int(
+                expert_params * (self.config.num_experts_per_tok / self.config.num_experts)
+            )
+            active_params = base_params + active_expert_params
+        else:
+            active_params = total_params
+
         # Calculate tied params deduplicated
         non_embedding_params = sum(
             p.numel() for n, p in self.named_parameters() if "embed_tokens" not in n
         )
         return {
             "total_parameters": total_params,
+            "active_parameters": active_params,
             "trainable_parameters": trainable_params,
             "non_embedding_parameters": non_embedding_params,
         }

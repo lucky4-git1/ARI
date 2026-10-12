@@ -51,13 +51,25 @@ class SFTDataset(Dataset):
                 if not line.strip():
                     continue
                 item = json.loads(line)
-                prompt = item.get("prompt") or item.get("instruction", "")
-                response = item.get("response") or item.get("output", "")
-                
-                # Encode parts
-                # System / User prefix
-                prompt_text = f"<user>\n{prompt}\n<assistant>\n"
-                response_text = f"{response}<eos>"
+                if "messages" in item and isinstance(item["messages"], list):
+                    # Multi-turn dialogue list
+                    messages = item["messages"]
+                    prompt_parts = []
+                    last_response = ""
+                    for i, msg in enumerate(messages):
+                        role = msg.get("role", "user")
+                        content = msg.get("content", "")
+                        if i == len(messages) - 1 and role == "assistant":
+                            last_response = content
+                        else:
+                            prompt_parts.append(f"<{role}>\n{content}")
+                    prompt_text = "\n".join(prompt_parts) + "\n<assistant>\n"
+                    response_text = f"{last_response}<eos>"
+                else:
+                    prompt = item.get("prompt") or item.get("instruction", "")
+                    response = item.get("response") or item.get("output", "")
+                    prompt_text = f"<user>\n{prompt}\n<assistant>\n"
+                    response_text = f"{response}<eos>"
                 
                 prompt_ids = tokenizer.encode(prompt_text)
                 response_ids = tokenizer.encode(response_text)
