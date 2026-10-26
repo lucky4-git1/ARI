@@ -33,7 +33,12 @@ artifacts/cache/
 *.bin
 *.onnx
 *.safetensors
+*.gguf
 *.zip
+.hf_home/
+tmp_15b/
+kaggle_fast_out/
+kaggle_jobs/
 data/raw/
 data/cache/
 data/processed/
